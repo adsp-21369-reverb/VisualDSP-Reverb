@@ -1,0 +1,71 @@
+013
+several allpass interpolations. still buzzing.
+when excursion is set to zero, sound is clear!
+--------------------------------
+012
+next up: rewrite from dynamic to static memory
+1) in struct c-files delay_buffer[..] and pragmas for struct calls
+or
+2) global buffers with pragmas, rewrite filter modules!!
+
+done: version (2) is working, but realtime execution problems.
+=> optimization switch: project options -> compile(general) => enable opt.
+process time from 10usec to 6.6 usec.
+--------------------------------
+011
+ldf file with seperated memory segments, doesn't do any difference (4ext_banks.ldf)
+maybe change calloc buffers to fixed buffers? or back to malloc?
+=> malloc with big delaylines (+ writing zeros) gives error already at dsp_init.
+build in a loop counter (loop_count) to count loops until error.
+--------------------------------
+010
+doj files from filter modules added to memory pane
+maybe reverse following:
+added doj to seg_dmda segement. - made no difference
+enlargened memory section according to manual - not possible 8/32 bit
+
+another approach: seperate memory sections for each tank, filter network
+=> doing in 011.
+--------------------------------
+009
+mod_ap2 rewritten, allpass-interpolation added
+--------------------------------
+008
+mod_ap2 starts to blow up, check again!!
+--------------------------------
+007
+added conversion functions to block process
+until end of ap4 now working!!!!!!!!!!
+--------------------------------
+006
+tests with mixed float,int,fract types: all noisy when it comes to fractionals
+start to rewrite to integer type!!
+--------------------------------
+005
+lp1_out stable, inputs halved by bit shift
+next step: fixed point impl.
+--------------------------------
+004
+lp1.out seems to work
+allpasses are noisy => scale coefficients for fixed point proc.
+--------------------------------
+003
+found error: variables in DSP_reverb give noisy output.
+leftChannel,rightChannel clean.
+note: division /2 adds noise.
+--------------------------------
+002
+added DSP_reverb stuff
+changed malloc to calloc
+--------------------------------
+001
+added DSP_program from TU Wien Prof. Doblinger
+--------------------------------
+000
+Original talkthrough
+--------------------------------
+
+
+
+
+

@@ -1,0 +1,59 @@
+Working Configuration: LINE 202 - 224
+Memory Section:
+
+MEMORY
+{
+  seg_rth  { TYPE(PM RAM) START(0x00090000) END(0x000900ff) WIDTH(48) }
+#ifdef __MEMINIT__
+  seg_init { TYPE(PM RAM) START(0x00090100) END(0x000901ff) WIDTH(48) }
+  seg_int_code { TYPE(PM RAM) START(0x00090200) END(0x00093FFF) WIDTH(48) }
+#else
+  seg_int_code { TYPE(PM RAM) START(0x00090100) END(0x00093FFF) WIDTH(48) }
+#endif // __MEMINIT__
+  seg_pmda { TYPE(PM RAM) START(0x000C0000) END(0x000c1FFF) WIDTH(32) }
+
+#ifdef IDDE_ARGS
+#define ARGV_START 0xb8000
+  mem_argv { TYPE(DM RAM) START(0x000b8000) END(0x000b80ff) WIDTH(32) }
+  seg_dmda { TYPE(DM RAM) START(0x000b8100) END(0x000bbfff) WIDTH(32) }
+#else
+  seg_dmda { TYPE(DM RAM) START(0x000b8000) END(0x000bbfff) WIDTH(32) }
+#endif
+  seg_stak { TYPE(DM RAM) START(0x000bc000) END(0x000bdfff) WIDTH(32) }
+  seg_heap { TYPE(DM RAM) START(0x000e0000) END(0x000e1fff) WIDTH(32)   }
+  seg_sram  { TYPE(DM RAM) START(0x01200000) LENGTH(0x3fff) WIDTH(8) }
+  seg_ext_dmda { TYPE(DM RAM) START(0x08000000) END(0x08FF0000) WIDTH(32)     }
+}
+
+===============================================================================
+
+Line 397 - 405
+Input Section:
+
+seg_ext_data
+        {
+          INPUT_SECTIONS( $OBJECTS(seg_ext_data) $LIBRARIES(seg_ext_data) DSP_allpass.doj(seg_ext_data) DSP_delay.doj(seg_ext_data) DSP_lowpass.doj(seg_ext_data) DSP_mod_allpass.doj(seg_ext_data) DSP_reverb.doj(seg_ext_data) DSP_allpass.doj(seg_dmda) DSP_delay.doj(seg_dmda) DSP_lowpass.doj(seg_dmda) DSP_mod_allpass.doj(seg_dmda) DSP_reverb.doj(seg_dmda))
+          INPUT_SECTIONS( $OBJECTS(seg_sdram) $LIBRARIES(seg_sdram))
+          INPUT_SECTIONS( $OBJECTS(seg_dmda) $LIBRARIES(seg_dmda))
+        } > seg_ext_dmda
+#endif // USE_SDRAM
+    }
+}
+
+===============================================================================
+
+Line 397 - 405
+Input Section:
+
+seg_ext_data
+        {
+          INPUT_SECTIONS( $OBJECTS(seg_ext_data) $LIBRARIES(seg_ext_data) DSP_allpass.doj(seg_ext_data) DSP_delay.doj(seg_ext_data) DSP_lowpass.doj(seg_ext_data) DSP_mod_allpass.doj(seg_ext_data) DSP_reverb.doj(seg_ext_data) )
+          
+	  INPUT_SECTIONS( $OBJECTS(seg_sdram) $LIBRARIES(seg_sdram))
+          
+	  INPUT_SECTIONS( $OBJECTS(seg_dmda) $LIBRARIES(seg_dmda) DSP_allpass.doj(seg_dmda) DSP_delay.doj(seg_dmda) DSP_lowpass.doj(seg_dmda) DSP_mod_allpass.doj(seg_dmda) DSP_reverb.doj(seg_dmda))
+        
+	} > seg_ext_dmda
+#endif // USE_SDRAM
+    }
+}

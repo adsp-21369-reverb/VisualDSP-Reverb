@@ -1,0 +1,406 @@
+
+ARCHITECTURE(ADSP-21369)
+
+//   Note: The SHARC 21369 has 2Mbit RAM and 6Mbit ROM in total.
+
+//   ADSP-21369 Memory Map:
+//   ------------------------------------------------------------------------
+
+//                    0x0000 0000 to 0x0003 FFFF  IOP Regs
+
+//   -----------------------------------------------------------------------
+//       Long word (64-bit) space.  Address range 0x0004 0000 to 0x0007 FFFF
+//   -----------------------------------------------------------------------
+
+//   Block 0   0x0004 0000 to 0x0004 BFFF  Long word (64) Space (3 Mbits ROM)
+//   Block 0   0x0004 C000 to 0x0004 EFFF  Long word (64) Space (0.75 Mbit RAM)
+//   Block 0   0x0004 F000 to 0x0004 FFFF  Reserved address space (0.25 Mbit)
+
+//   Block 1   0x0005 0000 to 0x0005 BFFF  Long word (64) Space (3 Mbits ROM)
+//   Block 1   0x0005 C000 to 0x0005 EFFF  Long word (64) Space (0.75 Mbit RAM)
+//   Block 1   0x0005 F000 to 0x0005 FFFF  Reserved address space (0.25 Mbit)
+
+//   Block 2   0x0006 0000 to 0x0006 0FFF  Long word (64) Space (0.25 Mbit RAM)
+//   Block 2   0x0006 1000 to 0x0006 1FFF  Internal Memory (Reserved 0.25 Mbits)
+//   Block 2   0x0006 2000 to 0x0006 FFFF  Internal Memory (Reserved 3.5 Mbits)
+
+//   Block 3   0x0007 0000 to 0x0007 0FFF  Long word (64) Space (0.25 Mbit RAM)
+//   Block 3   0x0007 1000 to 0x0007 1FFF  Internal Memory (Reserved 0.25 Mbits)
+//   Block 3   0x0007 2000 to 0x0007 FFFF  Internal Memory (Reserved 3.5 Mbits)
+
+//   Below you will see a memory map for the address space from 0x0008 0000 to
+//   0x000F FFFF The 48 bit space section describes what this address range
+//   looks like to an instruction that retrieves 48 bit memory.  The 32 bit
+//   section describes what this address range looks like to an instruction that
+//   retrieves 32 bit memory
+// 
+//   ------------------------------------------------------------------------
+//       48-bit space. Address range 0x0008 0000 to 0x000F FFFF
+//   ------------------------------------------------------------------------
+
+//   Block 0   0x0008 0000 to 0x0008 FFFF  Normal word (48) Space (3 Mbits ROM)
+//   Block 0   0x0009 0000 to 0x0009 3FFF  Normal word (48) Space (0.75 Mbit RAM)
+//   Block 0   0x0009 E000 to 0x0009 FFFF  Reserved address space (0.25 Mbit)
+
+//   Block 1   0x000A 0000 to 0x000A FFFF  Normal word (48) Space (3 Mbits ROM)
+//   Block 1   0x000B 0000 to 0x000B 3FFF  Normal word (48) Space (0.75 Mbit RAM)
+//   Block 1   0x000B E000 to 0x000B FFFF  Reserved address space (0.25 Mbit)
+
+//   Block 2   0x000C 0000 to 0x000C 1554  Normal word (48) Space (0.25 Mbit RAM)
+//   Block 2   0x000C 2000 to 0x000C 3FFF  Internal Memory (Reserved 0.25 Mbits)
+//   Block 2   0x000C 4000 to 0x000D FFFF  Internal Memory (Reserved 3.5 Mbits)
+
+//   Block 3   0x000E 0000 to 0x000E 1554  Normal word (48) Space (0.25 Mbit RAM)
+//   Block 3   0x000E 2000 to 0x000E 3FFF  Internal Memory (Reserved 0.25 Mbits)
+//   Block 3   0x000E 4000 to 0x000F FFFF  Internal Memory (Reserved 3.5 Mbits)
+
+//   ------------------------------------------------------------------------
+//       Normal word (32-bit) space. Address range 0x0008 0000 to 0x000F FFFF
+//   ------------------------------------------------------------------------
+
+//   Block 0   0x0008 0000 to 0x0009 7FFF  Normal word (32) Space (3 Mbits ROM)
+//   Block 0   0x0009 8000 to 0x0009 DFFF  Normal word (32) Space (0.75 Mbit RAM)
+//   Block 0   0x0009 E000 to 0x0009 FFFF  Reserved address space (0.25 Mbit)
+
+//   Block 1   0x000A 0000 to 0x000B 7FFF  Normal word (32) Space (3 Mbits ROM)
+//   Block 1   0x000B 8000 to 0x000B DFFF  Normal word (32) Space (0.75 Mbit RAM)
+//   Block 1   0x000B E000 to 0x000B FFFF  Reserved address space (0.25 Mbit)
+
+//   Block 2   0x000C 0000 to 0x000C 1FFF  Normal word (32) Space (0.25 Mbit RAM)
+//   Block 2   0x000C 2000 to 0x000C 3FFF  Internal Memory (Reserved 0.25 Mbits)
+//   Block 2   0x000C 4000 to 0x000D FFFF  Internal Memory (Reserved 3.5 Mbits)
+
+//   Block 3   0x000E 0000 to 0x000E 1FFF  Normal word (32) Space (0.25 Mbit RAM)
+//   Block 3   0x000E 2000 to 0x000E 3FFF  Internal Memory (Reserved 0.25 Mbits)
+//   Block 3   0x000E 4000 to 0x000F FFFF  Internal Memory (Reserved 3.5 Mbits)
+
+//   SDRAM     0x0800 0000 to 0x0083 FFFF  Normal word (32) Space (128 Mbits RAM)
+
+//          
+//   -----------------------------------------------------------------------
+//       Short word (16-bit) space. Address range 0x0010 0000 to 0x001F FFFF
+//   -----------------------------------------------------------------------
+//          
+//   Block 0   0x0010 0000 to 0x0012 FFFF  Short word (16) Space (3 Mbits ROM)
+//   Block 0   0x0013 0000 to 0x0013 BFFF  Short word (16) Space (0.75 Mbit RAM)
+//   Block 0   0x0013 C000 to 0x0013 FFFF  Reserved address space (0.25 Mbit)
+
+//   Block 1   0x0014 0000 to 0x0016 FFFF  Short word (16) Space (3 Mbits ROM)
+//   Block 1   0x0017 0000 to 0x0017 BFFF  Short word (16) Space (0.75 Mbit RAM)
+//   Block 1   0x0017 C000 to 0x0017 FFFF  Reserved address space (0.25 Mbit)
+
+//   Block 2   0x0018 0000 to 0x0018 3FFF  Short word (16) Space (0.25 Mbit RAM)
+//   Block 2   0x0018 4000 to 0x0018 7FFF  Internal Memory (Reserved 0.25 Mbits)
+//   Block 2   0x0018 8000 to 0x001B FFFF  Internal Memory (Reserved 3.5 Mbits)
+
+//   Block 3   0x001C 0000 to 0x001C 3FFF  Short word (16) Space (0.25 Mbit RAM)
+//   Block 3   0x001C 4000 to 0x001c 7FFF  Internal Memory (Reserved 0.25 Mbits)
+//   Block 3   0x001C 8000 to 0x001F FFFF  Internal Memory (Reserved 3.5 Mbits)
+
+//   This linker description file allocates:
+//         Internal 0x100 48 bit words of run-time header in memory block 0
+//                  0x100 48 bit words of initialization code in memory block 0
+//                  0x88 48 bit words for use by interrupt code
+//                  0x3d78 48 bit words of C code space in memory block 0
+//
+//                  cplus: 0x3f00, or c: 0x4000 32 bit words of DM data space in
+//                  memory block 1
+//
+//                  0x2000 32 bit words of C stack space in memory block 1
+//
+//                  0x2000 32 bit words of C PM data space in memory block 2
+//
+//                  0x2000 32 bit words of C heap space in memory block 3
+
+#ifndef __NO_STD_LIB
+SEARCH_DIR( $ADI_DSP/213xx/lib )
+#endif
+
+// The I/O library provides support for printing hexadecimal constants
+// using the "%a" conversion specifier, and for registering alternatives to
+// the default device driver that is supported by the VisualDSP++ simulator
+// and EZ-KIT Lite systems. Those applications that do not require this
+// functionality may define the macro __LIBIO_LITE which will select an
+// alternative I/O library and lead to reduced code occupancy.
+
+// The __LIBIO_FX library contains full support for fixed-point format
+// specifiers in printf and scanf.
+
+#ifdef __LIBIO_LITE
+# define LIBIO libio_lite.dlb
+# define LIBIOMT libio_litemt.dlb
+#elif defined(__LIBIO_FX)
+# define LIBIO libio_fx.dlb
+# define LIBIOMT libio_fxmt.dlb
+#else
+# define LIBIO libio.dlb
+# define LIBIOMT libiomt.dlb
+#endif
+
+#ifdef _ADI_THREADS
+#ifdef __ADI_LIBEH__
+$LIBRARIES = libc36xmt.dlb, LIBIOMT, libdsp36x.dlb;
+#else
+$LIBRARIES = libc36xmt.dlb, LIBIOMT, libdsp36x.dlb;
+#endif
+#else
+#ifdef __ADI_LIBEH__
+$LIBRARIES = libc36x.dlb, LIBIO, libdsp36x.dlb;
+#else
+$LIBRARIES = libc36x.dlb, LIBIO, libdsp36x.dlb;
+#endif
+#endif
+
+// Libraries from the command line are included in COMMAND_LINE_OBJECTS.
+#ifndef CRT_HDR
+# define CRT_HDR 369_hdr.doj
+#endif //CRT_HDR
+$OBJECTS = CRT_HDR, $COMMAND_LINE_OBJECTS;
+
+/*
+** List of objects which prefer internal memory placement
+*/
+ $OBJS_LIBS_INTERNAL =
+   $OBJECTS{prefersMem("internal")},
+   $LIBRARIES{prefersMem("internal")};
+
+/*
+** List of objects which don't prefer external memory placement
+*/
+ $OBJS_LIBS_NOT_EXTERNAL =
+   $OBJECTS{!prefersMem("external")},
+   $LIBRARIES{!prefersMem("external")};
+
+#if defined(USE_SDRAM_STACK) || defined(USE_SDRAM_HEAP)
+ #warning Putting stack/heap into external sdram can have a serious performance impact
+ #if !defined(USE_SDRAM)
+  #define USE_SDRAM
+ #endif
+#endif
+
+/*
+** minimum sizes of the stack and heap allocated
+*/
+#define STACK_SIZE 8K
+#define HEAP_SIZE 6K
+#define STACKHEAP_SIZE 14K
+
+// EZKIT MEMORY from EZKIT Manual:
+// SRAM:                    0x00200000 to 0x0027FFFF (0.5MBit)
+// FLASH:                   0x04000000 to 0x040FFFFF (1MBit)
+// SDRAM(~MS2):             0x08000000 to 0x08FF0000 (16M*8Bit)
+// seg_ext_dmda (default):  0x08000000 to 0x083FFFFF (4M*32Bit)
+// non SDRAM(~MS3):         0x0C000000 to 0x0CFFFFFF (16MBit)
+// SDRAM(~MS3):             0x0C000000 to 0x0FFFFFFF (68MBit)
+
+// rev_sec1 :  0x08000000 to 0x080FFFFF (1MBit)
+// rev_sec2 :  0x08100000 to 0x081FFFFF (1MBit)
+// rev_sec3 :  0x08200000 to 0x082FFFFF (1MBit)
+// rev_sec4 :  0x08300000 to 0x083FFFFF (1MBit)
+
+
+MEMORY
+{
+  seg_rth  { TYPE(PM RAM) START(0x00090000) END(0x000900ff) WIDTH(48) }
+#ifdef __MEMINIT__
+  seg_init { TYPE(PM RAM) START(0x00090100) END(0x000901ff) WIDTH(48) }
+  seg_int_code { TYPE(PM RAM) START(0x00090200) END(0x00093FFF) WIDTH(48) }
+#else
+  seg_int_code { TYPE(PM RAM) START(0x00090100) END(0x00093FFF) WIDTH(48) }
+#endif // __MEMINIT__
+  seg_pmda { TYPE(PM RAM) START(0x000C0000) END(0x000c1FFF) WIDTH(32) }
+
+#ifdef IDDE_ARGS
+#define ARGV_START 0xb8000
+  mem_argv { TYPE(DM RAM) START(0x000b8000) END(0x000b80ff) WIDTH(32) }
+  seg_dmda { TYPE(DM RAM) START(0x000b8100) END(0x000bbfff) WIDTH(32) }
+#else
+  seg_dmda { TYPE(DM RAM) START(0x000b8000) END(0x000bbfff) WIDTH(32) }
+#endif
+  seg_stak { TYPE(DM RAM) START(0x000bc000) END(0x000bdfff) WIDTH(32) }
+  seg_heap { TYPE(DM RAM) START(0x000e0000) END(0x000e1fff) WIDTH(32)   }
+  seg_sram  { TYPE(DM RAM) START(0x01200000) LENGTH(0x3fff) WIDTH(8) }
+  seg_ext_dmda { TYPE(DM RAM) START(0x08000000) END(0x08FF0000) WIDTH(32)     }
+}
+
+
+PROCESSOR P0
+{
+#ifdef IDDE_ARGS
+    RESOLVE(___argv_string, ARGV_START)
+#endif
+    KEEP( _main,___lib_end_of_heap_descriptions )
+    OUTPUT( $COMMAND_LINE_OUTPUT_FILE )
+
+    SECTIONS
+    {
+        // .text output section
+        seg_rth
+        {
+            INPUT_SECTIONS( $OBJECTS(seg_rth) $LIBRARIES(seg_rth))
+        } > seg_rth
+
+#ifdef __MEMINIT__
+        seg_init
+        {
+            ldf_seginit_space = . ;
+            INPUT_SECTIONS( $OBJECTS(seg_init) $LIBRARIES(seg_init))
+        } > seg_init
+#endif // __MEMINIT__
+
+        seg_int_code
+        {
+            // map code required to be in internal memory first
+            INPUT_SECTIONS( $OBJECTS(seg_int_code) $LIBRARIES(seg_int_code))
+#ifndef __MEMINIT__
+            INPUT_SECTIONS( $OBJECTS(seg_init) $LIBRARIES(seg_init))
+#endif // __MEMINIT__
+        } > seg_int_code
+
+        seg_pmco
+        {
+            // now map the default code sections
+            INPUT_SECTIONS( $OBJECTS(seg_pmco) $LIBRARIES(seg_pmco))
+        } > seg_int_code
+
+        seg_pmda
+        {
+            INPUT_SECTIONS( $OBJECTS(seg_pmda) $LIBRARIES(seg_pmda))
+        } > seg_pmda
+
+
+        .bss ZERO_INIT
+        {
+           INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(.bss))
+           INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(.bss))
+           INPUT_SECTIONS( $OBJECTS(.bss) $LIBRARIES(.bss))
+        } > seg_dmda
+
+#if defined(USE_SDRAM_STACK)
+        .bss_stak ZERO_INIT
+        {
+           INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(.bss))
+           INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(.bss))
+           INPUT_SECTIONS( $OBJECTS(.bss) $LIBRARIES(.bss))
+        } > seg_stak
+#endif
+
+#if defined(USE_SDRAM_HEAP)
+        .bss_heap ZERO_INIT
+        {
+           INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(.bss))
+           INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(.bss))
+           INPUT_SECTIONS( $OBJECTS(.bss) $LIBRARIES(.bss))
+        } > seg_heap
+#endif
+
+        seg_dmda
+        {
+            INPUT_SECTIONS( $OBJECTS(seg_int_data) $LIBRARIES(seg_int_data))
+            INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_dmda))
+            INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_dmda))
+            INPUT_SECTIONS( $OBJECTS(seg_dmda) $LIBRARIES(seg_dmda))
+        } > seg_dmda
+
+#if defined(USE_SDRAM_STACK)
+        seg_dmda_stak
+        {
+            INPUT_SECTIONS( $OBJECTS(seg_int_data) $LIBRARIES(seg_int_data))
+            INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_dmda))
+            INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_dmda))
+            INPUT_SECTIONS( $OBJECTS(seg_dmda) $LIBRARIES(seg_dmda))
+        } > seg_stak
+#endif
+
+#if defined(USE_SDRAM_HEAP)
+        seg_dmda_heap
+        {
+            INPUT_SECTIONS( $OBJECTS(seg_int_data) $LIBRARIES(seg_int_data))
+            INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_dmda))
+            INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_dmda))
+            INPUT_SECTIONS( $OBJECTS(seg_dmda) $LIBRARIES(seg_dmda))
+        } > seg_heap
+#endif
+
+#if !defined(USE_SDRAM_STACK)
+        stackseg
+        {
+            // allocate a stack for the application
+            ldf_stack_space = .;
+            ldf_stack_length = MEMORY_SIZEOF(seg_stak);
+            ldf_stack_end = ldf_stack_space + ldf_stack_length;
+        } > seg_stak
+#endif
+
+#if !defined(USE_SDRAM_HEAP)
+        heap
+        {
+            // allocate a heap for the application
+            ldf_heap_space = .;
+            ldf_heap_length = MEMORY_SIZEOF(seg_heap);
+            ldf_heap_end = ldf_heap_space + ldf_heap_length - 1;
+        } > seg_heap
+#endif
+
+        seg_sram
+        {
+            INPUT_SECTIONS($OBJECTS(seg_sram) $LIBRARIES(seg_sram))
+        } > seg_sram
+
+#if defined(USE_SDRAM)
+        seg_sdram_data
+        {
+          //reserve memory for heap/stack if we need it
+#if defined(USE_SDRAM_STACK) && defined(USE_SDRAM_HEAP)
+            RESERVE(stack_and_heap, stack_and_heap_length = STACKHEAP_SIZE)
+#elif defined(USE_SDRAM_STACK)
+            RESERVE(stack_and_heap, stack_and_heap_length = STACK_SIZE)
+#elif defined(USE_SDRAM_HEAP)
+            RESERVE(stack_and_heap, stack_and_heap_length = HEAP_SIZE)
+#endif // USE_SDRAM_STACK && USE_SDRAM_HEAP
+            //try and place anything else out into SDRAM
+            INPUT_SECTIONS( $OBJECTS(seg_dmda) $LIBRARIES(seg_dmda))
+            INPUT_SECTIONS( $OBJECTS(seg_ext_data) $LIBRARIES(seg_ext_data))
+            INPUT_SECTIONS( $OBJECTS(seg_sdram) $LIBRARIES(seg_sdram))
+        } > seg_ext_dmda
+
+        .bss_external ZERO_INIT
+        {
+           INPUT_SECTIONS( $OBJECTS(.bss) $LIBRARIES(.bss))
+        } > seg_ext_dmda
+
+#if defined(USE_SDRAM_STACK) || defined(USE_SDRAM_HEAP)
+        expand_ext_stack_and_heap
+        {
+            //expand the stack/heap to use the rest of the SDRAM.
+            RESERVE_EXPAND(stack_and_heap, stack_and_heap_length, 0)
+#if defined(USE_SDRAM_STACK) && defined(USE_SDRAM_HEAP)
+            ldf_stack_space = stack_and_heap;
+            ldf_stack_end = (ldf_stack_space + ((stack_and_heap_length *
+            STACK_SIZE) / (STACK_SIZE + HEAP_SIZE)));
+            ldf_stack_length = ldf_stack_end - ldf_stack_space - 1;
+            ldf_heap_space = ldf_stack_end;
+            ldf_heap_end = stack_and_heap + stack_and_heap_length;
+            ldf_heap_length = ldf_heap_end - ldf_heap_space;
+#elif defined(USE_SDRAM_STACK)
+            ldf_stack_space = stack_and_heap;
+            ldf_stack_length = stack_and_heap_length;
+            ldf_stack_end = ldf_stack_space + stack_and_heap_length;
+#elif defined(USE_SDRAM_HEAP)
+            ldf_heap_space = stack_and_heap;
+            ldf_heap_length = stack_and_heap_length;
+            ldf_heap_end = ldf_heap_space + stack_and_heap_length;
+#endif // USE_SDRAM_STACK && USE_SDRAM_HEAP
+        } > seg_ext_dmda
+#endif // USE_SDRAM_STACK || USE_SDRAM_HEAP
+#else
+        seg_ext_data
+        {
+          INPUT_SECTIONS( $OBJECTS(seg_ext_data) $LIBRARIES(seg_ext_data))
+          INPUT_SECTIONS( $OBJECTS(seg_sdram) $LIBRARIES(seg_sdram))
+          INPUT_SECTIONS( $OBJECTS(seg_dmda) $LIBRARIES(seg_dmda))
+        } > seg_ext_dmda
+#endif // USE_SDRAM
+    }
+}
+

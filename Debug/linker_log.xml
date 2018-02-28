@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="file:///C:/Program Files (x86)/Analog Devices/VisualDSP 5.1.2/System/linker_log.xsl"?>
+<DOCUMENT gen_time='Sun Feb 25 17:58:40 2018
+'>
+<MSG id='02BEF138' mid='li1021' type='Error' >
+<TEXT><![CDATA[The following symbols referenced in processor 'P0' could not be resolved:
+        'round [_round]' referenced from '.\Debug\DSP_mod_allpass.doj']]></TEXT>
+</MSG>
+</DOCUMENT>
