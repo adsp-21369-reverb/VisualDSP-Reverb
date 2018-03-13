@@ -45,14 +45,21 @@ void mod_ap_init(struct_mod_ap *data, float *buffer_mod_ap, int delaysize, float
 void mod_ap(struct_mod_ap *data, float sig)
 {
 
-        data->excursion_float = 0;	// deactivate modulated delay line
+        //data->excursion_float = 0;	// deactivate modulated delay line
+        data->excursion_float = 13*(sin(data->lfoIndex * TWOPI / (FS))+1); // excursion [0,+26]
         
-		//data->excursion_float = 13*(cos(data->lfoIndex * TWOPI / (FS))-1); // excursion [0,-26]
+        
         data->excursion_int = (int) (ceil(data->excursion_float));
         data->tau = ((float) data->excursion_int) - data->excursion_float;
         data->varDelaysize = data->delaysize + data->excursion_int;	
-	
-		// ----- Mod. APF with nested allpass interpolation:
+		
+        data->wIndex = (data->wIndex+1) % (data->delaysize);
+		data->rIndex = (data->wIndex+1+data->excursion_int) % (data->delaysize);
+        data->lfoIndex = (data->lfoIndex+1) % (FS);
+		       
+        
+        
+		// **************************** Mod. APF with nested allpass interpolation:
         data->in = sig;
         data->x_new = data->buffer[data->rIndex];
         // Simple allpass interpolator
@@ -65,9 +72,11 @@ void mod_ap(struct_mod_ap *data, float sig)
         
         data->x_old = data->x_new;
         data->y_old = data->y_new;
-        // ----- Code end
+        // **************************** Code end
 		
-        // ----- Mod. APF with nested linear interpolation:
+        
+        
+        // **************************** Mod. APF with nested linear interpolation:
         /*data->in = sig;
         data->x_new = data->buffer[data->rIndex];
         data->y_new = ((1-data->tau)*data->x_new) + ((data->tau) * data->x_old);
@@ -76,31 +85,27 @@ void mod_ap(struct_mod_ap *data, float sig)
         data->buffer[data->wIndex] = data->tapout;
         
         data->x_old = data->x_new;*/
-        // ----- Code end
+        // **************************** Code end
         
-		// ----- Mod. APF w/o Interpolation:
+        
+        
+		// **************************** Mod. APF w/o Interpolation:
 		/*data->in = sig;
         data->tapout = sig + (data->buffer[data->rIndex] * data->g);
         data->out = data->buffer[data->rIndex] - (data->tapout * data->g);
         data->buffer[data->wIndex] = data->tapout;*/
-		// ----- Old Code end
+		// **************************** Old Code end
                 
-
-        //data->rIndexMinus1++;
-        data->rIndex++;
-        data->wIndex++;
-        data->lfoIndex++;
-
-        /*if (data->rIndexMinus1 >= data->varDelaysize - 1)
-        data->rIndexMinus1=0;*/
-
-        if (data->rIndex >= data->varDelaysize)
+		
+		
+		/*if (data->rIndex >= data->delaysize)
         data->rIndex=0;
 
-        if (data->wIndex >= data->varDelaysize)
+        if (data->wIndex >= data->delaysize)
         data->wIndex=0;
 
         if(data->lfoIndex >= (FS))
-        data->lfoIndex=0;
+        data->lfoIndex=0;*/
+        
 
 }
